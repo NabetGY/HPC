@@ -27,13 +27,13 @@ int main(int argc, char const *argv[])
     
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
-            matrix_1[i][j] = rand ();
+            matrix_1[i][j] = rand () % 10000;
         }
     }
 
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
-            matrix_2[i][j] = rand ();
+            matrix_2[i][j] = rand () % 10000;
         }
     }
 
@@ -47,7 +47,7 @@ int main(int argc, char const *argv[])
                 matrix_3[c][b] = 0;
                 for (int a = 0; a < N; a++)
                     {
-                        matrix_3[c][b] = matrix_3[c][b] + (matrix_1[c][a] * matrix_2[b][a]);
+                        matrix_3[c][b] = matrix_3[c][b] + (matrix_1[c][a] * matrix_2[a][b]);
                     }                   
             }
         }
@@ -55,12 +55,28 @@ int main(int argc, char const *argv[])
     clock_t end = clock();
     double elapsed = (double)(end - start)/CLOCKS_PER_SEC;
 
-    printf("Tiempo obtenido: %.3f seconds.\n", elapsed);
-    printf("Tiempo begin: %u seconds.\n", start);
-    printf("Tiempo end: %u seconds.\n", end);
-    printf("Tiempo end: %u seconds.\n", CLOCKS_PER_SEC);
+    printf("%.3f", elapsed);
+    
+/*     printf ("\n\nFinal a :");
+    for (i = 0; i < N; i++) {
+        printf ("\n\t");
+        for (j = 0; j < N; j++)
+            printf ("%i \t", matrix_1[i][j]);
+    }
 
+    printf ("\n\nFinal b :");
+    for (i = 0; i < N; i++) {
+        printf ("\n\t");
+        for (j = 0; j < N; j++)
+            printf ("%i \t", matrix_2[i][j]);
+    }
 
+    printf ("\n\nFinal Matrix :");
+    for (i = 0; i < N; i++) {
+        printf ("\n\t");
+        for (j = 0; j < N; j++)
+            printf ("%i \t", matrix_3[i][j]);
+    } */
 
     for(i = 0; i < N; i++)
         {
