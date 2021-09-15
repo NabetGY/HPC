@@ -10,9 +10,11 @@ int TAMANIO;
 int SEGMENTO;
 
 
-void *multi(int shift) {
+void *multi(void* arg) {
 
-    int a, b, c;
+    int a, b, c, shift;
+
+    shift = *(int*)arg;
 
     for (c = shift; c < SEGMENTO+shift; c++)
         {        
@@ -25,6 +27,8 @@ void *multi(int shift) {
                     }                   
             }
         }
+
+    pthread_exit(0);
 
 }
 
@@ -74,12 +78,13 @@ int main(int argc, char const *argv[])
 
     clock_t start = clock();
 
-    for (int i = 0; i < numHilos; i++)
+    for (i = 0; i < numHilos; i++)
     {
-        pthread_create(&misHilos[i], NULL, (void *) multi, i*SEGMENTO);
+        int salto = i*SEGMENTO;
+        pthread_create(&misHilos[i], NULL, (void *) multi, &salto);
     }
     
-    for (int i = 0; i < numHilos; i++)
+    for (i = 0; i < numHilos; i++)
     {
         pthread_join(misHilos[i], NULL);
     }
