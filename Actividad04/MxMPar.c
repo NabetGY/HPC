@@ -91,6 +91,7 @@ int main(int argc, char const *argv[])
         }else if (pidC == 0)
         {
             multi(salto);
+            sleep(5);
           //  exit(1);
         } else
         {
@@ -110,16 +111,17 @@ int main(int argc, char const *argv[])
 
     if (pidC > 0)
     {
-        printf("%.3f pid : %d \n", elapsed, getpid());
-        imprimirMatrix();
+        printf("%.3f pid papi: %d \n", elapsed, getpid());
+        
     }
+    imprimirMatrix();
     
-        printf ("\n\nFinal Matrix :pid : %d \n", getpid());
+/*         printf ("\n\nFinal Matrix :pid : %d \n", getpid());
     for (int i = 0; i < TAMANIO; i++) {
         printf ("\n\t");
         for (int j = 0; j < TAMANIO; j++)
             printf ("%i \t", matrix_3[i][j]);
-    }
+    } */
 
 
     for(i = 0; i < TAMANIO; i++)
@@ -139,23 +141,34 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
+
+
+
+
+
+
+
+
+
+
+
 void imprimirMatrix()
 {
-    printf ("\n\nFinal a :");
+    printf ("\n\nFinal a | pid : %d \n", getpid());
     for (int i = 0; i < TAMANIO; i++) {
         printf ("\n\t");
         for (int j = 0; j < TAMANIO; j++)
             printf ("%i \t", matrix_1[i][j]);
     }
 
-    printf ("\n\nFinal b :");
+    printf ("\n\nFinal b | pid : %d \n", getpid());
     for (int i = 0; i < TAMANIO; i++) {
         printf ("\n\t");
         for (int j = 0; j < TAMANIO; j++)
             printf ("%i \t", matrix_2[i][j]);
     }
 
-    printf ("\n\nFinal Matrix :");
+    printf ("\n\nFinal Matrix | pid : %d \n", getpid());
     for (int i = 0; i < TAMANIO; i++) {
         printf ("\n\t");
         for (int j = 0; j < TAMANIO; j++)
