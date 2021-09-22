@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include <time.h>
 
 int **matrix_1;
@@ -7,6 +8,9 @@ int **matrix_2;
 int **matrix_3;
 int TAMANIO;
 
+float time_diff2(struct timespec *start, struct timespec *end){
+    return (end->tv_sec - start->tv_sec) + 1e-9*(end->tv_nsec - start->tv_nsec);
+}
 
 void *multi() {
 
@@ -29,6 +33,8 @@ void *multi() {
 int main(int argc, char const *argv[])
 {
     int i, j;
+    struct timespec start2;
+    struct timespec end2;
 
     TAMANIO = atoi(argv[1]);
 
@@ -58,15 +64,12 @@ int main(int argc, char const *argv[])
     }
 
 
-    clock_t start = clock();
+    clock_gettime(CLOCK_REALTIME, &start2);
 
     multi();
 
-    clock_t end = clock();
-
-    double elapsed = (double)(end - start)/CLOCKS_PER_SEC;
-
-    printf("%.3f", elapsed);
+    clock_gettime(CLOCK_REALTIME, &end2);
+    printf("%.3f", time_diff2(&start2, &end2));
     
 /*     printf ("\n\nFinal a :");
     for (i = 0; i < TAMANIO; i++) {

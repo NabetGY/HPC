@@ -2,18 +2,12 @@
 #include <unistd.h>
 #include <sys/shm.h>
 #include <sys/stat.h>
-#include <sys/time.h>
 #include <wait.h>
 #include <stdlib.h>
-#include <time.h>
+
 
 int TAMANIO;
 int SEGMENTO;
-
-float time_diff2(struct timespec *start, struct timespec *end){
-    return (end->tv_sec - start->tv_sec) + 1e-9*(end->tv_nsec - start->tv_nsec);
-}
-
 
 unsigned int sizeof_dm(int rows, int cols, size_t sizeElement){
     size_t size = rows * (sizeof(void *) + (cols * sizeElement));
@@ -29,21 +23,27 @@ void create_index(void **m, int rows, int cols, size_t sizeElement){
     }
 }
 
+void print_matriz(int **matrix, int Rows, int Cols){
+    printf("\n");
+        for(int i=0; i<Rows; i++){
+            for(int j=0; j<Cols; j++)
+                printf("%.2f\t",matrix[i][j]);
+            printf("\n");
+        }
+}
 
 int main(int argc, char **argv){
 
     int **matrix;
     int **matrixA;
     int **matrixB;
-    int numHijos, status, shmId;
-    struct timespec start2;
-    struct timespec end2;
+    int Cols = 10, Rows = 5, shmId;
+    int i, j, numHijos, status;
 
     pid_t pidC;
+    TAMANIO = 8;
 
-    TAMANIO = atoi(argv[1]);
-
-    numHijos = atoi(argv[2]);
+    numHijos = 4 ; //atoi(argv[2]);
 
 
     size_t sizeMatrix = sizeof_dm(TAMANIO,TAMANIO,sizeof(int));
@@ -58,9 +58,9 @@ int main(int argc, char **argv){
     matrixB = shmat(shmId3, NULL, 0); 
     create_index((void*)matrixB, TAMANIO, TAMANIO, sizeof(int));
 
-
-    for(int i=0; i<TAMANIO; i++){
-        for(int j=0; j<TAMANIO; j++)
+            int pos=0;
+        for(int i=0; i<TAMANIO; i++){
+            for(int j=0; j<TAMANIO; j++)
             {
                 matrixB[i][j] =  rand() % 10;
                 matrixA[i][j] =  rand() % 10;
@@ -69,8 +69,6 @@ int main(int argc, char **argv){
 
     SEGMENTO = TAMANIO/numHijos;
     int shift = 0;
-
-    clock_gettime(CLOCK_REALTIME, &start2);
     for (int i = 0; i < numHijos; i++)
     {    
         shift = i*SEGMENTO;
@@ -89,15 +87,48 @@ int main(int argc, char **argv){
                             }                   
                     }
                 }
+
+    printf("Matrix final: \n\t");
+    printf("--*******************------------");
+    
+    for (int i = 0; i < TAMANIO; i++)
+    {
+        printf("\n\t");
+        for (int j = 0; j < TAMANIO; j++)
+            printf("%i \t", matrix[i][j]);
+    }
+    printf("----------------------------------");
             shmdt(matrix);
-            exit(EXIT_SUCCESS);
+            exit(1);
         }
+        sleep(3);
+        }
+
+    wait(&status);
+    shmctl(shmId, IPC_RMID, 0);
+
+    printf("Matrix A: \n\t");
+    for (int i = 0; i < TAMANIO; i++)
+    {
+        printf("\n\t");
+        for (int j = 0; j < TAMANIO; j++)
+            printf("%i \t", matrixA[i][j]);
     }
 
-    wait(NULL);
-    clock_gettime(CLOCK_REALTIME, &end2);
-    printf("%.3f", time_diff2(&start2, &end2));
+    printf("Matrix B: \n\t");
+    for (int i = 0; i < TAMANIO; i++)
+    {
+        printf("\n\t");
+        for (int j = 0; j < TAMANIO; j++)
+            printf("%i \t", matrixB[i][j]);
+    }
 
-    shmctl(shmId, IPC_RMID, 0);
+    printf("Matrix final: \n\t");
+    for (int i = 0; i < TAMANIO; i++)
+    {
+        printf("\n\t");
+        for (int j = 0; j < TAMANIO; j++)
+            printf("%i \t", matrix[i][j]);
+    }
     return 0;
 }

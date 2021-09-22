@@ -5,21 +5,21 @@ main(void)
 {
     pid_t pid;
     int x;
-    
-    for(x=1;x<=3;x++)
+
+    for (x = 1; x <= 3; x++)
     {
-        pid=fork(); 
-        if(pid)
+        pid = fork();
+        if (pid)
         {
-            printf("Soy el proceso %d\n",getpid());
+            printf("Soy el proceso %d\n", getpid());
             sleep(2);
         }
         else
         {
-            printf("soy el hijo %d, mi padre es %d\n",getpid(),getppid());
+            printf("soy el hijo %d, mi padre es %d\n", getpid(), getppid());
             sleep(2);
             exit(0);
-        }   
+        }
     }
     return 0;
 }
