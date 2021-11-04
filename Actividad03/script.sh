@@ -8,7 +8,7 @@ for i in ${lista[@]};
     variable="$i,"
     for (( j=0; j<10; j++ ));
         do
-        variable+="$(./mxm2.out $i 4),"
+        variable+="$(./mxm2.out $i, 4),"
         done
     echo $variable>>result.csv        
     done
