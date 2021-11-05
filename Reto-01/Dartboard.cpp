@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <chrono>
+using namespace std::chrono;
 
 using namespace std;
 
@@ -18,9 +20,9 @@ int main(void){
         cin >> n;
         if (n <=0 )
             break;
-        srand((int)clock()); //Inicializa el generador de random
+        
 
-        clock_t start = clock();
+        auto start = high_resolution_clock::now();
 
         for (k=hits=0; k < n; ++k)
         {
@@ -30,10 +32,14 @@ int main(void){
                 ++hits;
         }
 
-        clock_t end = clock();
-        double elapsed = (double)(end - start)/CLOCKS_PER_SEC;
+        auto stop = high_resolution_clock::now();
 
-        printf("Tiempo: %.3f \n", elapsed);
+        std::chrono::duration<double> duration = stop - start;
+
+        
+        cout << "Tiempo new function: " <<duration.count() << endl;
+        
+
 
         double pi_approx = 4.0 * hits/n;
         cout << "Aproximación: "

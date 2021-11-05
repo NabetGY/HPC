@@ -3,6 +3,8 @@
 #include <time.h>
 #include <math.h>
 #include <pthread.h>
+#include <chrono>
+using namespace std::chrono;
 
 using namespace std;
 
@@ -10,10 +12,10 @@ using namespace std;
 // hits -> numero de golpes
 
 long n, hitsFinal;
-const double factor = 1.0/RAND_MAX;;
+const double factor = 1.0/RAND_MAX;
 
 
-void *area(void *arg){
+void *area(void* arg){
     long k, hits;
     for (k=hits=0; k < n/4; ++k)
         {   
@@ -21,6 +23,7 @@ void *area(void *arg){
             double y = rand() * factor;
             if (x*x + y*y < 1.0) // Está dentro del circulo?
                 ++hits;
+
                 
         }
         hitsFinal+= hits;
@@ -32,8 +35,6 @@ int main(void){
     int i, numHilos ;
     numHilos = 4;
     pthread_t misHilos[numHilos];
-
-    
     
     while (1)
     {
@@ -41,10 +42,11 @@ int main(void){
         cin >> n;
         if (n <=0 )
             break;
-        srand((int)clock()); //Inicializa el generador de random
+        //srand((int)clock()); //Inicializa el generador de random
 
         
-        clock_t start = clock();
+        //clock_t start = clock();
+        auto start = high_resolution_clock::now();
         for (i = 0; i < numHilos; i++)
             {
                 pthread_create(&misHilos[i], NULL, area, NULL);
@@ -55,9 +57,18 @@ int main(void){
             {
                 pthread_join(misHilos[i], NULL);
             }
-        
-        clock_t end = clock();
-        double elapsed = (double)(end - start)/CLOCKS_PER_SEC;
+        auto stop = high_resolution_clock::now();
+
+        cout << "Factor: " <<factor<<endl;
+
+        std::chrono::duration<double> duration = stop - start;
+        cout << "Tiempo new function: " <<duration.count() << endl;
+
+        // clock_t end = clock();
+        // double elapsed = (double)(end - start)/CLOCKS_PER_SEC;
+        // printf("Tiempo: %.3f\n", elapsed);
+        // cout << "inicio: " << start/1000000 <<endl;
+        // cout << "End: " << end/1000000 <<endl;
         
 
         cout << "Soy hits FINAL: " << hitsFinal <<endl;
