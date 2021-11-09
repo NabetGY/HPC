@@ -21,6 +21,7 @@ void *area(void* arg){
         {   
             double x = rand() * factor;
             double y = rand() * factor;
+            cout << "Soy X: "<<x<<endl;
             if (x*x + y*y < 1.0) // Está dentro del circulo?
                 ++hits;
 

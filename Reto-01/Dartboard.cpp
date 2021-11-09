@@ -3,9 +3,13 @@
 #include <time.h>
 #include <math.h>
 #include <chrono>
+#include <random>
 using namespace std::chrono;
 
 using namespace std;
+
+std::random_device rd;
+std::mt19937 mt(rd());
 
 // n -> es el numero de lanzamientos
 // hits -> numero de golpes
@@ -21,13 +25,14 @@ int main(void){
         if (n <=0 )
             break;
         
-
+        std::uniform_real_distribution<double> dist(0, 1);
         auto start = high_resolution_clock::now();
 
         for (k=hits=0; k < n; ++k)
-        {
-            double x = rand() * factor;
-            double y = rand() * factor;
+        {   
+            double x = dist(mt) ;
+            double y = dist(mt) ;
+            //cout << "Soy X: "<<x<<endl;
             if (x*x + y*y < 1.0) // Está dentro del circulo?
                 ++hits;
         }
@@ -38,6 +43,8 @@ int main(void){
 
         
         cout << "Tiempo new function: " <<duration.count() << endl;
+        double rando = rand();
+        cout << "rand: " <<rando<<endl;
         
 
 
