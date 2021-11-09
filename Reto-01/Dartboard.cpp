@@ -14,14 +14,13 @@ std::mt19937 mt(rd());
 // n -> es el numero de lanzamientos
 // hits -> numero de golpes
 
-int main(void){
+int main(int argc, char const *argv[]){
     long k,n,hits;
     const double factor= 1.0/RAND_MAX;
     
     while (1)
     {
-        cout << "Ingrese el N° de lanzamientos (o 0 para salir): ";
-        cin >> n;
+        n = atoi(argv[1]);
         if (n <=0 )
             break;
         
@@ -43,8 +42,7 @@ int main(void){
 
         
         cout << "Tiempo new function: " <<duration.count() << endl;
-        double rando = rand();
-        cout << "rand: " <<rando<<endl;
+        
         
 
 
