@@ -52,7 +52,7 @@ int main (int argc, char const *argv[]){
                 if (euclid(A, C) == 1) // A and C are relative prin
                     ++nHits;
             }
-
+            
             close (fd[2*i]);
             write(fd[2*i + 1], &nHits, sizeof(nHits));
             close(fd[2*i + 1]);
@@ -60,35 +60,24 @@ int main (int argc, char const *argv[]){
         }
     }
 
-     if (pidC > 0)
-    {   
+     if (pidC > 0){  
         for (int i = 0; i < numHijos; i++){
             int aux = 0;
             close (fd[2*i + 1]);
             read(fd[2*i], &aux, sizeof(aux));
             close(fd[2*i]);
             nHits += aux;
-            cout << "Auxiliar: " << aux << endl;
         }
 
-        cout << "nHits: " <<nHits<<endl;
         auto stop = high_resolution_clock::now();
 
         std::chrono::duration<double> duration = stop - start;
 
-        
-        cout << "Tiempo: " <<duration.count() << endl;
-
-        cout << "nHits: " <<nHits<<endl;
-        cout << "nTries: " <<n<<endl;
-
+        cout <<duration.count();
 
         double f = nHits * 1.0/n;
-        double pi = sqrt(6.0/ f); 
-        cout << "Aproximación de pi: " << pi << endl;
-
+        double pi = sqrt(6.0/ f);
     }
-
     return 0;
 }
 

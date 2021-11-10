@@ -9,13 +9,10 @@ using namespace std::chrono;
 
 using namespace std;
 
-
-
 // n -> es el numero de lanzamientos
 // hits -> numero de golpes
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const *argv[]){
 
     long k, n, hits = 0;
     const double factor = 1.0 / RAND_MAX;
@@ -26,9 +23,8 @@ int main(int argc, char const *argv[])
     
     pid_t pidC;
     
-    
-    
     n = atoi(argv[1]);
+
     auto start = high_resolution_clock::now();
 
     for (int i = 0; i < numHijos; i++){
@@ -47,7 +43,6 @@ int main(int argc, char const *argv[])
             {
                 double x = dist(mt);
                 double y = dist(mt);
-                //cout << "Soy X del hijo : "<<x<<" --> " <<i<< endl;
                 if (x * x + y * y < 1.0) // Está dentro del circulo?
                     ++hits;
             }
@@ -56,36 +51,26 @@ int main(int argc, char const *argv[])
             write(fd[2*i + 1], &hits, sizeof(hits));
             close(fd[2*i + 1]);
             exit(0);
-    }
+        }
     }
 
     
-    if (pidC > 0)
-    {   
+    if (pidC > 0){
         for (int i = 0; i < numHijos; i++){
             int aux = 0;
             close (fd[2*i + 1]);
             read(fd[2*i], &aux, sizeof(aux));
             close(fd[2*i]);
             hits += aux;
-            cout << "Auxiliar: " << aux << endl;
         }
 
         auto stop = high_resolution_clock::now();
 
         std::chrono::duration<double> duration = stop - start;
 
-        cout << "Tiempo new function: " << duration.count() << endl;
+        cout << duration.count();
 
         double pi_approx = 4.0 * hits / n;
-        cout << "Aproximación: "
-             << pi_approx
-             << " (error = "
-             << fabs(M_PI - pi_approx) * 100 / M_PI
-             << "%)\n)"<<endl;
-        cout << "Hits: " << hits <<endl;
-
-        
     }
 
     return 0;

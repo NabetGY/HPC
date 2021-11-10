@@ -9,10 +9,6 @@ using namespace std::chrono;
 
 using namespace std;
 
-
-
-
-
 // n -> es el numero de lanzamientos
 // hits -> numero de golpes
 
@@ -32,7 +28,6 @@ void *area(void* arg){
             double y = dist(mt);
             if (x*x + y*y < 1.0) // Está dentro del circulo?
                 ++hits;
-
                 
         }
         hitsFinal+= hits;
@@ -47,51 +42,30 @@ int main(int argc, char const *argv[]){
     
     pthread_t misHilos[numHilos];
     
-    while (1)
-    {
+    while (1){
         n = atoi(argv[1]);
         if (n <=0 )
             break;
-        //srand((int)clock()); //Inicializa el generador de random
 
-        
-        //clock_t start = clock();
         auto start = high_resolution_clock::now();
-        for (i = 0; i < numHilos; i++)
-            {
-                pthread_create(&misHilos[i], NULL, area, NULL);
-            }
+
+        for (i = 0; i < numHilos; i++){
+            pthread_create(&misHilos[i], NULL, area, NULL);
+        }
         
-        
-        for (i = 0; i < numHilos; i++)
-            {
-                pthread_join(misHilos[i], NULL);
-            }
+        for (i = 0; i < numHilos; i++){
+            pthread_join(misHilos[i], NULL);
+        }
+
         auto stop = high_resolution_clock::now();
 
-        cout << "Factor: " <<factor<<endl;
-
         std::chrono::duration<double> duration = stop - start;
-        cout << "Tiempo new function: " <<duration.count() << endl;
 
-        // clock_t end = clock();
-        // double elapsed = (double)(end - start)/CLOCKS_PER_SEC;
-        // printf("Tiempo: %.3f\n", elapsed);
-        // cout << "inicio: " << start/1000000 <<endl;
-        // cout << "End: " << end/1000000 <<endl;
-        
+        cout <<duration.count();
 
-        cout << "Soy hits FINAL: " << hitsFinal <<endl;
         double pi_approx = 4.0 * hitsFinal/n;
-        cout << "Aproximación: "
-        << pi_approx
-        << " (error = "
-        << fabs(M_PI - pi_approx)*100/M_PI
-        << "%)\n)";
 
         break;
-        
     }
     return 0;
-    
 }

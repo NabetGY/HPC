@@ -31,7 +31,6 @@ int main(int argc, char const *argv[]){
         {   
             double x = dist(mt) ;
             double y = dist(mt) ;
-            //cout << "Soy X: "<<x<<endl;
             if (x*x + y*y < 1.0) // Está dentro del circulo?
                 ++hits;
         }
@@ -40,18 +39,9 @@ int main(int argc, char const *argv[]){
 
         std::chrono::duration<double> duration = stop - start;
 
+        cout <<duration.count();
         
-        cout << "Tiempo new function: " <<duration.count() << endl;
-        
-        
-
-
         double pi_approx = 4.0 * hits/n;
-        cout << "Aproximación: "
-        << pi_approx
-        << " (error = "
-        << fabs(M_PI - pi_approx)*100/M_PI
-        << "%)\n)";
 
         break;
         

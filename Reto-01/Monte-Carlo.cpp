@@ -43,16 +43,12 @@ int main (int argc, char const *argv[]){
         std::chrono::duration<double> duration = stop - start;
 
         
-        cout << "Tiempo: " <<duration.count() << endl;
+        cout <<duration.count();
 
         double f = nHits * 1.0/nTries;
         double pi = sqrt(6.0/ f); 
-        cout << "Aproximación de pi: " << pi << endl;
-
         break;
-
     }
-
     return 0;
 }
 

@@ -48,7 +48,6 @@ int main (int argc, char const *argv[]){
 
     while (1){
         
-        
         n = atoi(argv[1]);
 
         if (n <= 0) break;
@@ -57,32 +56,25 @@ int main (int argc, char const *argv[]){
 
         auto start = high_resolution_clock::now();
 
-        for (i = 0; i < numHilos; i++)
-            {
-                pthread_create(&misHilos[i], NULL, coprimo, NULL);
-            }
-
+        for (i = 0; i < numHilos; i++){
+            pthread_create(&misHilos[i], NULL, coprimo, NULL);
+        }
         
-        for (i = 0; i < numHilos; i++)
-            {
-                pthread_join(misHilos[i], NULL);
-            }
+        for (i = 0; i < numHilos; i++){
+            pthread_join(misHilos[i], NULL);
+        }
 
         auto stop = high_resolution_clock::now();
 
         std::chrono::duration<double> duration = stop - start;
 
-        
-        cout << "Tiempo: " <<duration.count() << endl;
+        cout <<duration.count();
 
         double f = nHits * 1.0/nTries;
         double pi = sqrt(6.0/ f); 
-        cout << "Aproximación de pi: " << pi << endl;
 
         break;
-
     }
-
     return 0;
 }
 
