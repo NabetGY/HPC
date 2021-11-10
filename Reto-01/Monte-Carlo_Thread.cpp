@@ -1,14 +1,17 @@
 #include <iostream>
 #include <stdlib.h>
+#include <time.h>
 #include <math.h>
+#include <pthread.h>
 #include <chrono>
 #include <random>
 using namespace std::chrono;
 
 using namespace std;
 
-std::random_device rd;
-std::mt19937 mt(rd());
+
+int numHilos, n, nTries, nHits, hitsFinal;
+
 
 int euclid(int u, int v){
     int r;
@@ -19,9 +22,32 @@ int euclid(int u, int v){
     return v;
 }
 
+void *coprimo(void* arg){
+
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_real_distribution<double> dist(0, RAND_MAX);
+
+    for (nTries = nHits=0; nTries <n/numHilos; ++nTries){
+            int A = dist(mt) + 1;
+            int C = dist(mt) + 1;
+            if (euclid(A, C) == 1) // A and C are relative prin
+                ++nHits;
+        }
+        hitsFinal+= nHits;
+    pthread_exit(0);
+}
+
 int main (int argc, char const *argv[]){
+
+    int i;
+    
+    numHilos = atoi(argv[2]);
+    
+    pthread_t misHilos[numHilos];
+
     while (1){
-        int n, nTries, nHits;
+        
         
         n = atoi(argv[1]);
 
@@ -31,12 +57,16 @@ int main (int argc, char const *argv[]){
 
         auto start = high_resolution_clock::now();
 
-        for (nTries = nHits=0; nTries <n; ++nTries){
-            int A = dist(mt) + 1;
-            int C = dist(mt) + 1;
-            if (euclid(A, C) == 1) // A and C are relative prin
-                ++nHits;
-        }
+        for (i = 0; i < numHilos; i++)
+            {
+                pthread_create(&misHilos[i], NULL, coprimo, NULL);
+            }
+
+        
+        for (i = 0; i < numHilos; i++)
+            {
+                pthread_join(misHilos[i], NULL);
+            }
 
         auto stop = high_resolution_clock::now();
 
