@@ -1,0 +1,114 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+#include <chrono>
+#include <random>
+using namespace std::chrono;
+
+using namespace std;
+
+int **matrix_1;
+int **matrix_2;
+int **matrix_3;
+int TAMANIO;
+
+
+void mult() {
+
+    int a, b, c;
+
+    for (c = 0; c < TAMANIO; c++)
+        {        
+            for(b = 0; b < TAMANIO; b++)
+            {
+                matrix_3[c][b] = 0;
+                for (a = 0; a < TAMANIO; a++)
+                    {
+                        matrix_3[c][b] = matrix_3[c][b] + (matrix_1[c][a] * matrix_2[a][b]);
+                    }                   
+            }
+        }
+
+}
+
+int main(int argc, char const *argv[])
+{
+    int i, j;
+
+    TAMANIO = atoi(argv[1]);
+
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(0, 10000);
+
+    matrix_1 = (int **) malloc (sizeof (int *) * TAMANIO);
+    matrix_2 = (int **) malloc (sizeof (int *) * TAMANIO);
+    matrix_3 = (int **) malloc (sizeof (int *) * TAMANIO);
+
+    for (i = 0; i < TAMANIO; i++)
+        matrix_1[i] = (int *) malloc (sizeof (int) * TAMANIO);
+    for (i = 0; i < TAMANIO; i++)
+        matrix_2[i] = (int *) malloc (sizeof (int) * TAMANIO);
+    for (i = 0; i < TAMANIO; i++)
+        matrix_3[i] = (int *) malloc (sizeof (int) * TAMANIO);
+
+  
+    
+    for (i = 0; i < TAMANIO; i++) {
+        for (j = 0; j < TAMANIO; j++) {
+            matrix_1[i][j] = dist(mt);
+        }
+    }
+
+    for (i = 0; i < TAMANIO; i++) {
+        for (j = 0; j < TAMANIO; j++) {
+            matrix_2[i][j] = dist(mt);
+        }
+    }
+
+
+    auto start = high_resolution_clock::now();
+
+    mult();
+
+    auto stop = high_resolution_clock::now();
+
+    std::chrono::duration<double> duration = stop - start;
+
+    cout <<duration.count();
+    
+/*     printf ("\n\nFinal a :");
+    for (i = 0; i < TAMANIO; i++) {
+        printf ("\n\t");
+        for (j = 0; j < TAMANIO; j++)
+            printf ("%i \t", matrix_1[i][j]);
+    }
+
+    printf ("\n\nFinal b :");
+    for (i = 0; i < TAMANIO; i++) {
+        printf ("\n\t");
+        for (j = 0; j < TAMANIO; j++)
+            printf ("%i \t", matrix_2[i][j]);
+    }
+
+    printf ("\n\nFinal Matrix :");
+    for (i = 0; i < TAMANIO; i++) {
+        printf ("\n\t");
+        for (j = 0; j < TAMANIO; j++)
+            printf ("%i \t", matrix_3[i][j]);
+    } */
+
+    for(i = 0; i < TAMANIO; i++)
+        {
+            free(matrix_1[i]);
+            free(matrix_2[i]);
+            free(matrix_3[i]);
+
+        }
+
+    free(matrix_1);
+    free(matrix_2);
+    free(matrix_3);
+
+    return 0;
+}

@@ -1,0 +1,21 @@
+## cat mpi.sbatch 
+#!/bin/bash
+#SBATCH --reservation=carla # Nombre de la partición seleccionada - las que muestra el comando sinfo
+#SBATCH --job-name=mpi1 # Nombre que se le quiere dar al trabajo a lanzar
+##SBATCH --time=01:00:00 # Este campo es opcional y establece el tiempo que durara la ejecución.
+#SBATCH --nodes=3 # Número de servidores requeridos. Por lo general es uno solo al menos que el programa realice trabajos paralelos en múltiples servidores
+##SBATCH --mem=23000 # Cantidad de memoria RAM necesaria en el proceso. Campo opcional y suele
+## usarse cuando las aplicaciones tienen en su configuración el establecimiento
+## de uso de memoria. Se establece en MB - Cada servidor tiene máximo 100 GB.
+#SBATCH --ntasks-per-node=1 # Define el número de tareas a ejecutar por servidor. Se recomienda que para
+## un nodo de 24 se seleccione máximo 24 y para el de 16 máximo 16, pueden
+## ser menos. Si se sabe que su aplicación uso solo un core, debe escribirse el número 1.
+##SBATCH --gres=gpu:4 # Si la aplicación a ejecutar requiere el uso de GPUs debe agregarse este campo
+## y especificar el número de tarjetas a usar. Cada servidor contiene 8 tarjetas
+## NVIDIA pero se recomienda usar un máximo de 4 por trabajo.
+#SBATCH --output=carlampi.%j.out # Nombre del archivo donde se guardara la salida de la ejecución de la aplicación.
+## El parámetro %j le agrega al nombre del archivo el JOBID asignado a la tarea.
+#SBATCH --error=beast.%j.err # Nombre del archivo de error. Este contiene la información de los errores
+## producidos en la ejecución de la aplicación.
+##SBATCH --mail-type=ALL # Slurm tiene la opción de informar por correo los estados del trabajo. BEGIN, END, FAIL, REQUEUE, ALL
+##SBATCH --mail-user=name@andes.edu # Email a donde se solicita enviar los estados de la tarea.[evento57@guane MPI]$ 
