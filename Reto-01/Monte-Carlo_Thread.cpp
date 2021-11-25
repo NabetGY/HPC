@@ -10,7 +10,9 @@ using namespace std::chrono;
 using namespace std;
 
 
-int numHilos, n, nTries, nHits, hitsFinal;
+int numHilos;
+long n;
+long hitsFinal;
 
 
 int euclid(int u, int v){
@@ -27,14 +29,14 @@ void *coprimo(void* arg){
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<double> dist(0, RAND_MAX);
-
-    for (nTries = nHits=0; nTries <n/numHilos; ++nTries){
+    long hits, nTries;
+    for (nTries = hits=0; nTries <n/numHilos; ++nTries){
             int A = dist(mt) + 1;
             int C = dist(mt) + 1;
             if (euclid(A, C) == 1) // A and C are relative prin
-                ++nHits;
+                ++hits;
         }
-        hitsFinal+= nHits;
+        hitsFinal+= hits;
     pthread_exit(0);
 }
 
@@ -70,8 +72,10 @@ int main (int argc, char const *argv[]){
 
         cout <<duration.count();
 
-        double f = nHits * 1.0/nTries;
+        double f = hitsFinal * 1.0/n;
         double pi = sqrt(6.0/ f); 
+        cout << "\npi: " << pi << endl;
+
 
         break;
     }

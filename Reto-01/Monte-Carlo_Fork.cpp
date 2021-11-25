@@ -77,6 +77,9 @@ int main (int argc, char const *argv[]){
 
         double f = nHits * 1.0/n;
         double pi = sqrt(6.0/ f);
+
+        cout << "\npi: " << pi << endl;
+        
     }
     return 0;
 }
