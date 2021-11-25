@@ -37,8 +37,6 @@ void mult(){
 				for (int k=0; k<TAMANIO; k++){
 					matrix_3[i][j] = matrix_3[i][j] + matrix_1[i][k] * matrix_2[k][j];
 				}
-				cout<<"\n"<<matrix_3[i][j]<<" numero de hilo: "<< id;
-
 			}
 		}
 	}
@@ -97,7 +95,7 @@ int main(int argc, char const *argv[])
     cout <<duration.count();
 
 
-    printf ("\n\nFinal a :");
+/*     printf ("\n\nFinal a :");
     for (i = 0; i < TAMANIO; i++) {
         printf ("\n\t");
         for (j = 0; j < TAMANIO; j++)
@@ -117,7 +115,7 @@ int main(int argc, char const *argv[])
         for (j = 0; j < TAMANIO; j++)
             printf ("%i \t", matrix_3[i][j]);
     }
-
+*/
     for(i = 0; i < TAMANIO; i++)
         {
             free(matrix_1[i]);
@@ -126,11 +124,9 @@ int main(int argc, char const *argv[])
 
         }
 
-        printf ("\n\t");
-
     free(matrix_1);
     free(matrix_2);
-    free(matrix_3);
+    free(matrix_3); 
 
     return 0;
 }
